@@ -18,7 +18,9 @@ public:
     ~MainWindow();
     void assignQuestionData(Question question);
     void setRadioButton(int index,bool isMCQ);
-
+    void applyStyleSheetToRadioButtons();
+    void applyStyleSheetToPushButtons();
+    void applyAnswerStyleSheet(bool isCorrect);
 private slots:
     void on_submitButton_clicked();
 

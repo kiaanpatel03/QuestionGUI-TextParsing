@@ -17,6 +17,7 @@
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QRadioButton>
+#include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QStackedWidget>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QVBoxLayout>
@@ -30,25 +31,27 @@ public:
     QWidget *centralwidget;
     QLabel *questionLabel;
     QLabel *questionTypeLabel;
-    QPushButton *submitButton;
-    QWidget *layoutWidget;
-    QHBoxLayout *horizontalLayout;
-    QPushButton *previousButton;
-    QPushButton *nextButton;
-    QPushButton *pushButton;
     QStackedWidget *questionBox;
     QWidget *MCQPage;
-    QWidget *layoutWidget1;
+    QWidget *layoutWidget;
     QVBoxLayout *verticalLayout;
     QRadioButton *option1RadioButton;
     QRadioButton *option2RadioButton;
     QRadioButton *option3RadioButton;
     QRadioButton *option4RadioButton;
     QWidget *page_2;
-    QWidget *widget;
+    QWidget *layoutWidget1;
     QVBoxLayout *verticalLayout_2;
     QRadioButton *TrueRadioButton;
     QRadioButton *FalseRadioButton;
+    QWidget *widget;
+    QHBoxLayout *horizontalLayout_2;
+    QPushButton *submitButton;
+    QPushButton *pushButton;
+    QSpacerItem *horizontalSpacer;
+    QHBoxLayout *horizontalLayout;
+    QPushButton *previousButton;
+    QPushButton *nextButton;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -56,7 +59,8 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName("MainWindow");
-        MainWindow->resize(543, 378);
+        MainWindow->resize(562, 378);
+        MainWindow->setStyleSheet(QString::fromUtf8("background-color: rgb(255, 255, 255);"));
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName("centralwidget");
         centralwidget->setEnabled(true);
@@ -67,61 +71,38 @@ public:
         questionTypeLabel = new QLabel(centralwidget);
         questionTypeLabel->setObjectName("questionTypeLabel");
         questionTypeLabel->setGeometry(QRect(40, 20, 311, 18));
-        submitButton = new QPushButton(centralwidget);
-        submitButton->setObjectName("submitButton");
-        submitButton->setGeometry(QRect(420, 20, 91, 41));
-        submitButton->setCheckable(false);
-        layoutWidget = new QWidget(centralwidget);
-        layoutWidget->setObjectName("layoutWidget");
-        layoutWidget->setGeometry(QRect(350, 290, 168, 28));
-        horizontalLayout = new QHBoxLayout(layoutWidget);
-        horizontalLayout->setObjectName("horizontalLayout");
-        horizontalLayout->setContentsMargins(0, 0, 0, 0);
-        previousButton = new QPushButton(layoutWidget);
-        previousButton->setObjectName("previousButton");
-
-        horizontalLayout->addWidget(previousButton);
-
-        nextButton = new QPushButton(layoutWidget);
-        nextButton->setObjectName("nextButton");
-
-        horizontalLayout->addWidget(nextButton);
-
-        pushButton = new QPushButton(centralwidget);
-        pushButton->setObjectName("pushButton");
-        pushButton->setGeometry(QRect(20, 290, 151, 31));
         questionBox = new QStackedWidget(centralwidget);
         questionBox->setObjectName("questionBox");
         questionBox->setGeometry(QRect(60, 90, 431, 171));
         MCQPage = new QWidget();
         MCQPage->setObjectName("MCQPage");
-        layoutWidget1 = new QWidget(MCQPage);
-        layoutWidget1->setObjectName("layoutWidget1");
-        layoutWidget1->setGeometry(QRect(50, 10, 331, 146));
-        verticalLayout = new QVBoxLayout(layoutWidget1);
+        layoutWidget = new QWidget(MCQPage);
+        layoutWidget->setObjectName("layoutWidget");
+        layoutWidget->setGeometry(QRect(50, 10, 331, 146));
+        verticalLayout = new QVBoxLayout(layoutWidget);
         verticalLayout->setObjectName("verticalLayout");
         verticalLayout->setContentsMargins(0, 0, 0, 0);
-        option1RadioButton = new QRadioButton(layoutWidget1);
+        option1RadioButton = new QRadioButton(layoutWidget);
         option1RadioButton->setObjectName("option1RadioButton");
-        option1RadioButton->setAutoFillBackground(true);
+        option1RadioButton->setAutoFillBackground(false);
         option1RadioButton->setCheckable(true);
         option1RadioButton->setChecked(false);
         option1RadioButton->setAutoRepeat(false);
 
         verticalLayout->addWidget(option1RadioButton);
 
-        option2RadioButton = new QRadioButton(layoutWidget1);
+        option2RadioButton = new QRadioButton(layoutWidget);
         option2RadioButton->setObjectName("option2RadioButton");
         option2RadioButton->setAutoExclusive(true);
 
         verticalLayout->addWidget(option2RadioButton);
 
-        option3RadioButton = new QRadioButton(layoutWidget1);
+        option3RadioButton = new QRadioButton(layoutWidget);
         option3RadioButton->setObjectName("option3RadioButton");
 
         verticalLayout->addWidget(option3RadioButton);
 
-        option4RadioButton = new QRadioButton(layoutWidget1);
+        option4RadioButton = new QRadioButton(layoutWidget);
         option4RadioButton->setObjectName("option4RadioButton");
 
         verticalLayout->addWidget(option4RadioButton);
@@ -129,27 +110,64 @@ public:
         questionBox->addWidget(MCQPage);
         page_2 = new QWidget();
         page_2->setObjectName("page_2");
-        widget = new QWidget(page_2);
-        widget->setObjectName("widget");
-        widget->setGeometry(QRect(80, 50, 281, 56));
-        verticalLayout_2 = new QVBoxLayout(widget);
+        layoutWidget1 = new QWidget(page_2);
+        layoutWidget1->setObjectName("layoutWidget1");
+        layoutWidget1->setGeometry(QRect(80, 50, 281, 56));
+        verticalLayout_2 = new QVBoxLayout(layoutWidget1);
         verticalLayout_2->setObjectName("verticalLayout_2");
         verticalLayout_2->setContentsMargins(0, 0, 0, 0);
-        TrueRadioButton = new QRadioButton(widget);
+        TrueRadioButton = new QRadioButton(layoutWidget1);
         TrueRadioButton->setObjectName("TrueRadioButton");
 
         verticalLayout_2->addWidget(TrueRadioButton);
 
-        FalseRadioButton = new QRadioButton(widget);
+        FalseRadioButton = new QRadioButton(layoutWidget1);
         FalseRadioButton->setObjectName("FalseRadioButton");
 
         verticalLayout_2->addWidget(FalseRadioButton);
 
         questionBox->addWidget(page_2);
+        widget = new QWidget(centralwidget);
+        widget->setObjectName("widget");
+        widget->setGeometry(QRect(30, 280, 491, 30));
+        horizontalLayout_2 = new QHBoxLayout(widget);
+        horizontalLayout_2->setObjectName("horizontalLayout_2");
+        horizontalLayout_2->setContentsMargins(0, 0, 0, 0);
+        submitButton = new QPushButton(widget);
+        submitButton->setObjectName("submitButton");
+        submitButton->setCheckable(false);
+
+        horizontalLayout_2->addWidget(submitButton);
+
+        pushButton = new QPushButton(widget);
+        pushButton->setObjectName("pushButton");
+        pushButton->setEnabled(true);
+
+        horizontalLayout_2->addWidget(pushButton);
+
+        horizontalSpacer = new QSpacerItem(188, 20, QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Minimum);
+
+        horizontalLayout_2->addItem(horizontalSpacer);
+
+        horizontalLayout = new QHBoxLayout();
+        horizontalLayout->setObjectName("horizontalLayout");
+        previousButton = new QPushButton(widget);
+        previousButton->setObjectName("previousButton");
+
+        horizontalLayout->addWidget(previousButton);
+
+        nextButton = new QPushButton(widget);
+        nextButton->setObjectName("nextButton");
+
+        horizontalLayout->addWidget(nextButton);
+
+
+        horizontalLayout_2->addLayout(horizontalLayout);
+
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName("menubar");
-        menubar->setGeometry(QRect(0, 0, 543, 23));
+        menubar->setGeometry(QRect(0, 0, 562, 23));
         MainWindow->setMenuBar(menubar);
         statusbar = new QStatusBar(MainWindow);
         statusbar->setObjectName("statusbar");
@@ -157,7 +175,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        questionBox->setCurrentIndex(1);
+        questionBox->setCurrentIndex(0);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -168,16 +186,16 @@ public:
         MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "Mock Quiz", nullptr));
         questionLabel->setText(QCoreApplication::translate("MainWindow", "Question", nullptr));
         questionTypeLabel->setText(QCoreApplication::translate("MainWindow", "QuestionType", nullptr));
-        submitButton->setText(QCoreApplication::translate("MainWindow", "Submit", nullptr));
-        previousButton->setText(QCoreApplication::translate("MainWindow", "Previous", nullptr));
-        nextButton->setText(QCoreApplication::translate("MainWindow", "Next", nullptr));
-        pushButton->setText(QCoreApplication::translate("MainWindow", "displayQuestionData", nullptr));
         option1RadioButton->setText(QCoreApplication::translate("MainWindow", "Option1", nullptr));
         option2RadioButton->setText(QCoreApplication::translate("MainWindow", "Option2", nullptr));
         option3RadioButton->setText(QCoreApplication::translate("MainWindow", "Option3", nullptr));
         option4RadioButton->setText(QCoreApplication::translate("MainWindow", "Option4", nullptr));
         TrueRadioButton->setText(QCoreApplication::translate("MainWindow", "True", nullptr));
         FalseRadioButton->setText(QCoreApplication::translate("MainWindow", "False", nullptr));
+        submitButton->setText(QCoreApplication::translate("MainWindow", "Submit", nullptr));
+        pushButton->setText(QCoreApplication::translate("MainWindow", "Cheat", nullptr));
+        previousButton->setText(QCoreApplication::translate("MainWindow", "Previous", nullptr));
+        nextButton->setText(QCoreApplication::translate("MainWindow", "Next", nullptr));
     } // retranslateUi
 
 };
