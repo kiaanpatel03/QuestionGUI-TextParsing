@@ -14,8 +14,9 @@ public:
     void setUserAnswer(int answer);
     bool isMultipleChoiceQuestionType();
     std::string getQuestionPrompt();
-    friend std::ostream& operator<<(std::ostream& os,  Question& obj);
+
     bool isCorrect();
+
 
 
 private:

@@ -17,7 +17,7 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     void assignQuestionData(Question question);
-    void setRadioButton(int index);
+    void setRadioButton(int index,bool isMCQ);
 
 private slots:
     void on_submitButton_clicked();
@@ -35,6 +35,10 @@ private slots:
     void on_option3RadioButton_clicked();
 
     void on_option4RadioButton_clicked();
+
+    void on_TrueRadioButton_clicked();
+
+    void on_FalseRadioButton_clicked();
 
 private:
     Ui::MainWindow *ui;

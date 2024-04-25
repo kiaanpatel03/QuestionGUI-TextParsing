@@ -39,12 +39,7 @@ bool Question::isCorrect(){
 }
 
 
-// std::ostream& operator<<(std::ostream& os,  Question& obj) {
-//     os << "Q : " << obj.getQuestionPrompt() << std::endl
-//        << "UA : " << obj.getUserAnswer() << std::endl
-//        << "CA : " << obj.getCorrectIndex();
-//     return os;
-// }
+
 
 
 

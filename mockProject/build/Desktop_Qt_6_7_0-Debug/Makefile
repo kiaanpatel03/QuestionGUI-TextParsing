@@ -1390,6 +1390,11 @@ mainwindow.o: ../../mainwindow.cpp ../../mainwindow.h \
 		/home/vyasa/Qt/6.7.0/gcc_64/include/QtCore/QVariant \
 		/home/vyasa/Qt/6.7.0/gcc_64/include/QtWidgets/QApplication \
 		/home/vyasa/Qt/6.7.0/gcc_64/include/QtWidgets/qapplication.h \
+		/home/vyasa/Qt/6.7.0/gcc_64/include/QtWidgets/QHBoxLayout \
+		/home/vyasa/Qt/6.7.0/gcc_64/include/QtWidgets/qboxlayout.h \
+		/home/vyasa/Qt/6.7.0/gcc_64/include/QtWidgets/qlayout.h \
+		/home/vyasa/Qt/6.7.0/gcc_64/include/QtWidgets/qlayoutitem.h \
+		/home/vyasa/Qt/6.7.0/gcc_64/include/QtWidgets/qgridlayout.h \
 		/home/vyasa/Qt/6.7.0/gcc_64/include/QtWidgets/QLabel \
 		/home/vyasa/Qt/6.7.0/gcc_64/include/QtWidgets/qlabel.h \
 		/home/vyasa/Qt/6.7.0/gcc_64/include/QtWidgets/qframe.h \
@@ -1406,11 +1411,8 @@ mainwindow.o: ../../mainwindow.cpp ../../mainwindow.h \
 		/home/vyasa/Qt/6.7.0/gcc_64/include/QtWidgets/QStatusBar \
 		/home/vyasa/Qt/6.7.0/gcc_64/include/QtWidgets/qstatusbar.h \
 		/home/vyasa/Qt/6.7.0/gcc_64/include/QtWidgets/QVBoxLayout \
-		/home/vyasa/Qt/6.7.0/gcc_64/include/QtWidgets/qboxlayout.h \
-		/home/vyasa/Qt/6.7.0/gcc_64/include/QtWidgets/qlayout.h \
-		/home/vyasa/Qt/6.7.0/gcc_64/include/QtWidgets/qlayoutitem.h \
-		/home/vyasa/Qt/6.7.0/gcc_64/include/QtWidgets/qgridlayout.h \
-		/home/vyasa/Qt/6.7.0/gcc_64/include/QtWidgets/QWidget
+		/home/vyasa/Qt/6.7.0/gcc_64/include/QtWidgets/QWidget \
+		../../questiongroup.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../../mainwindow.cpp
 
 question.o: ../../question.cpp ../../question.h
