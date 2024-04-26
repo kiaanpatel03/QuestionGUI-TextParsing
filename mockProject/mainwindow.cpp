@@ -86,18 +86,19 @@ void MainWindow::assignQuestionData(Question question){
         ui->option3RadioButton->setText(QString::fromStdString(question.getOptions()[2]));
         ui->option4RadioButton->setText(QString::fromStdString(question.getOptions()[3]));
 
-        if(question.getUserAnswer() == -1){
-            setRadioButton(-1, question.isMultipleChoiceQuestionType());
-            // this is done to match the defualt radiobutton selected
-            Question tempQuestion = testGroup.getQuestion();
-            tempQuestion.setUserAnswer(0);
-            testGroup.setQuestion(tempQuestion);
-        }
+
     }else{
         ui->questionBox->setCurrentIndex(1);
 
         ui->questionTypeLabel->setText(QString::fromStdString("True/False Question"));
         // add assignment option
+    }
+    if(question.getUserAnswer() == -1){
+        // setRadioButton(-1, question.isMultipleChoiceQuestionType());
+        // this is done to match the defualt radiobutton selected
+        Question tempQuestion = testGroup.getQuestion();
+        tempQuestion.setUserAnswer(0);
+        testGroup.setQuestion(tempQuestion);
     }
     ui->questionLabel->setText(QString::fromStdString(question.getQuestionPrompt()));
 
