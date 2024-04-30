@@ -1,6 +1,7 @@
 #include "questiongroup.h"
 
 QuestionGroup::QuestionGroup() {}
+
 void QuestionGroup::next(){
     if(this->index  < (this->allQuestions.size() -1 )){
         index ++;
@@ -10,6 +11,7 @@ void QuestionGroup::next(){
         std::cout << "No more next questions" << std::endl;
     }
 }
+
 void QuestionGroup::previous(){
     if(this->index  > 0){
         index --;
@@ -19,9 +21,17 @@ void QuestionGroup::previous(){
     }
 }
 
+int QuestionGroup::size(){
+    return this->allQuestions.size();
+}
+
 
 int QuestionGroup::getIndex(){
     return this-> index;
+}
+
+void QuestionGroup::setQuestion( Question question){
+    this->allQuestions[index] = question;
 }
 
 
@@ -38,7 +48,4 @@ Question QuestionGroup::getQuestion(){
 
 QuestionGroup::~QuestionGroup(){
     // TODO :update for memory management
-}
-void QuestionGroup::setQuestion( Question question){
-    this->allQuestions[index] = question;
 }

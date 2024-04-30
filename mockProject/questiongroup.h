@@ -16,6 +16,8 @@ public:
     void setQuestion( Question question);
     int getIndex();
     ~QuestionGroup();
+    int size();
+
 private:
     std::vector<Question> allQuestions;
     int index = 0;

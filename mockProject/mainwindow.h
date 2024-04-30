@@ -21,6 +21,8 @@ public:
     void applyStyleSheetToRadioButtons();
     void applyStyleSheetToPushButtons();
     void applyAnswerStyleSheet(bool isCorrect);
+    void applyStyleUpdateAnswer(int answerIndex);
+    void changeProgresssBar();
 private slots:
     void on_submitButton_clicked();
 

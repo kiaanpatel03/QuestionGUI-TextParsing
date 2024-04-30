@@ -31,6 +31,18 @@ const std::vector<Question> testQuestions = {q1, q2,q3, q4, q5, q6, q7, q8, q9, 
 QuestionGroup testGroup(testQuestions);
 
 
+
+// Apply answer index cm
+void MainWindow::applyStyleUpdateAnswer(int answerIndex){
+
+    applyStyleSheetToRadioButtons();
+
+    Question tempQuestion = testGroup.getQuestion();
+    tempQuestion.setUserAnswer(answerIndex);
+    testGroup.setQuestion(tempQuestion);
+
+}
+
 // sets a radiobutton specificied by the index to checked state
 void MainWindow::setRadioButton(int index,bool isMCQ){
     if(isMCQ){
@@ -74,12 +86,13 @@ void MainWindow::setRadioButton(int index,bool isMCQ){
 
 // assigns information about question to labels
 void MainWindow::assignQuestionData(Question question){
+    changeProgresssBar();
     // Assigns question data to correct widget
-    // TODO : add assignment of user selected radiobutton - first get assignement
 
     if(question.isMultipleChoiceQuestionType()){
         ui->questionBox->setCurrentIndex(0);
         ui->questionTypeLabel->setText(QString::fromStdString("Multiple Choice Question"));
+
         /* assign options */
         ui->option1RadioButton->setText(QString::fromStdString(question.getOptions()[0]));
         ui->option2RadioButton->setText(QString::fromStdString(question.getOptions()[1]));
@@ -94,16 +107,14 @@ void MainWindow::assignQuestionData(Question question){
         // add assignment option
     }
     if(question.getUserAnswer() == -1){
-        // setRadioButton(-1, question.isMultipleChoiceQuestionType());
+
         // this is done to match the defualt radiobutton selected
         Question tempQuestion = testGroup.getQuestion();
         tempQuestion.setUserAnswer(0);
         testGroup.setQuestion(tempQuestion);
     }
+
     ui->questionLabel->setText(QString::fromStdString(question.getQuestionPrompt()));
-
-
-
 
     setRadioButton(question.getUserAnswer(), question.isMultipleChoiceQuestionType());
 }
@@ -137,6 +148,17 @@ void MainWindow::applyStyleSheetToPushButtons()
     for (QPushButton* pushButton : pushButtons) {
         pushButton->setStyleSheet(styleSheet);
     }
+}
+
+void MainWindow::changeProgresssBar(){
+    double  groupSize = testGroup.size();
+    double position = testGroup.getIndex() +1;
+
+    double percentage  = (position/groupSize) *100;
+
+
+
+    ui->questionProgress->setValue(percentage);
 }
 
 // applies a color based on user answer
@@ -193,17 +215,29 @@ void MainWindow::applyAnswerStyleSheet(bool isCorrect){
 
 
 }
+
+
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
 
-
-
     ui->setupUi(this);
 
-
     // load first question of the 'quiz'
+    QString progressBarStyleSheet = "QProgressBar {"
+                         "border: 1px solid black;"
+                         "border-radius: 7px;"
+                         "background-color: #ffffff;"
+                         "}"
+                         "QProgressBar::chunk {"
+                         "background-color: #51829B;"
+                         "border-radius: 5px;"
+                         "}"
+        ;
+
+    ui->questionProgress->setStyleSheet(progressBarStyleSheet);
     applyStyleSheetToRadioButtons();
     applyStyleSheetToPushButtons();
     assignQuestionData(testGroup.getQuestion());
@@ -220,10 +254,10 @@ void MainWindow::on_submitButton_clicked()
 {
     if(testGroup.getQuestion().getUserAnswer() != -1){
         if(testGroup.getQuestion().isCorrect()){
-             std::cout<< "Correct Answer" << std::endl;
+             // std::cout<< "Correct Answer" << std::endl;
             applyAnswerStyleSheet(true);
         }else{
-            std::cout<< "Incorrect Answer" << std::endl;
+            // std::cout<< "Incorrect Answer" << std::endl;
             applyAnswerStyleSheet(false);
         }
     }else{
@@ -238,8 +272,9 @@ void MainWindow::on_nextButton_clicked()
 {
     applyStyleSheetToRadioButtons();
     testGroup.next();
-    std::cout<< "Current Question Index : " << testGroup.getIndex() << std::endl;
+    // std::cout<< "Current Question Index : " << testGroup.getIndex() << std::endl;
     assignQuestionData(testGroup.getQuestion());
+
 }
 
 // Transitions to prior question index and loads content
@@ -247,9 +282,7 @@ void MainWindow::on_previousButton_clicked()
 {
     applyStyleSheetToRadioButtons();
     testGroup.previous();
-    std::cout<< "Current Question Index : " << testGroup.getIndex() << std::endl;
     assignQuestionData(testGroup.getQuestion());
-
 }
 
 // TODO : remove the below method : used of testing
@@ -262,58 +295,39 @@ void MainWindow::on_pushButton_clicked()
                 << "CA : " << obj.getCorrectIndex()<<std::endl ;
 }
 
-// TODO : Revise the bellow 'option' and 'true/false' radiobutton into a single method
+
 // The following methods is used to check if a radiobutton is checked and sets the user answer in the question object
 void MainWindow::on_option1RadioButton_clicked()
 {
-    applyStyleSheetToRadioButtons();
-    Question tempQuestion = testGroup.getQuestion();
-    tempQuestion.setUserAnswer(0);
-    testGroup.setQuestion(tempQuestion);
+
+    applyStyleUpdateAnswer(0);
 }
 
 void MainWindow::on_option2RadioButton_clicked()
 {
-    applyStyleSheetToRadioButtons();
-
-    Question tempQuestion = testGroup.getQuestion();
-    tempQuestion.setUserAnswer(1);
-    testGroup.setQuestion(tempQuestion);}
+    applyStyleUpdateAnswer(1);
+}
 
 void MainWindow::on_option3RadioButton_clicked()
 {
-    applyStyleSheetToRadioButtons();
-
-    Question tempQuestion = testGroup.getQuestion();
-    tempQuestion.setUserAnswer(2);
-    testGroup.setQuestion(tempQuestion);
+    applyStyleUpdateAnswer(2);
 }
 
 void MainWindow::on_option4RadioButton_clicked()
 {
-    applyStyleSheetToRadioButtons();
-
-    Question tempQuestion = testGroup.getQuestion();
-    tempQuestion.setUserAnswer(3);
-    testGroup.setQuestion(tempQuestion);
+    applyStyleUpdateAnswer(3);
 }
 
 // The following methods are for the true/false radiobuttons
 void MainWindow::on_TrueRadioButton_clicked()
 {
-    applyStyleSheetToRadioButtons();
-    Question tempQuestion = testGroup.getQuestion();
-    tempQuestion.setUserAnswer(0);
-    testGroup.setQuestion(tempQuestion);
+    applyStyleUpdateAnswer(0);
 }
 
 void MainWindow::on_FalseRadioButton_clicked()
 {
-    applyStyleSheetToRadioButtons();
+    applyStyleUpdateAnswer(1);
 
-    Question tempQuestion = testGroup.getQuestion();
-    tempQuestion.setUserAnswer(1);
-    testGroup.setQuestion(tempQuestion);
 }
 
 
