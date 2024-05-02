@@ -94,7 +94,7 @@ int transform_answer_to_index(ParseQuestion question){
         return 0;
     }else{
 
-        cout << letter << endl ;
+        // cout << letter << endl ;
 
         switch (letter)
         {
