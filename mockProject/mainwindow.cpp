@@ -2,37 +2,190 @@
 #include "ui_mainwindow.h"
 #include "question.h"
 #include "questiongroup.h"
+#include "parsequestion.h"
 
 #include <vector>
 #include <iostream>
 #include <QRadioButton>
+#include <string>
+#include <fstream>
+#include <cstring>
+#include <random>
+#include <algorithm>
+#include <cstdlib>
+#include <ctime>
+
+// vector to store all of the lines
+vector<string> lines;
+vector<ParseQuestion> parsedQuestions;
+QuestionGroup testGroup;
 
 
 
-Question q1("What is the capital of France?", {"Paris", "London", "Berlin", "Madrid"}, 0, true);
-Question q2("Who wrote the novel 'Pride and Prejudice'?", {"William Shakespeare", "Jane Austen", "Charles Dickens", "Emily Brontë"}, 1, true);
-Question q4("What is the square root of 144?", {"10", "12", "14", "16"}, 2, true);
-Question q6("Who painted the famous artwork 'Mona Lisa'?", {"Vincent van Gogh", "Pablo Picasso", "Leonardo da Vinci", "Michelangelo"}, 2, true);
-Question q8("What is the name of the artificial intelligence system created by Anthropic?", {"GPT-3", "Claude", "Alexa", "Siri"}, 1, true);
-Question q11("Who directed the movie 'Inception'?", {"Christopher Nolan", "Steven Spielberg", "Martin Scorsese", "Quentin Tarantino"}, 0, true);
-Question q14("Who wrote the play 'Hamlet'?", {"William Shakespeare", "Oscar Wilde", "George Bernard Shaw", "Tennessee Williams"}, 0, true);
-Question q3("The smallest planet in our solar system is Mercury.", {"True", "False"}, 0, false);
-Question q5("The chemical symbol for gold is Au.", {"True", "False"}, 0, false);
-Question q7("The largest ocean on Earth is the Pacific Ocean.", {"True", "False"}, 0, false);
-Question q9("The square of 7 is 49.", {"True", "False"}, 0, false);
-Question q10("The chemical symbol for sodium is Na.", {"True", "False"}, 0, false);
-Question q12("The largest mammal on Earth is the Blue Whale.", {"True", "False"}, 0, false);
-Question q13("The formula for the area of a circle is πr².", {"True", "False"}, 0, false);
-Question q15("The fastest land animal is the Cheetah.", {"True", "False"}, 0, false);
+/* Parse Questions Methods */
 
-const std::vector<Question> testQuestions = {q1, q2,q3, q4, q5, q6, q7, q8, q9, q10, q11, q12, q13, q14, q15};
+ParseQuestion getQuestion(int index, vector<string> questions)
+{
+    ParseQuestion returnQuestion;
 
-// 'load' testQuestions into QuestionGroup for 'additional' vector functionality
-QuestionGroup testGroup(testQuestions);
+    if (index > questions.capacity() || index < 0)
+    {
+        cout << "Invalid index to fetch question from" << endl;
+    }
+
+    else
+    {
+        string line = questions[index];
+        returnQuestion.parseDetails(line);
+    }
+
+    return returnQuestion;
+}
+
+vector<ParseQuestion> getQuestionsOfDifficulty(int numQuestions, string difficulty, vector<string> questions)
+{
+    vector<ParseQuestion> returnQuestions(0);
+    vector<int> usedQuestions(0);    // store the question ids of questions already used
+
+    returnQuestions.reserve(numQuestions);
+    usedQuestions.reserve(numQuestions);
+
+    while(returnQuestions.size() < returnQuestions.capacity())
+    {
+        // Generate a random number
+        int randomNumber = rand() % 118;
+        //cout << randomNumber << endl;
+
+        if (find(usedQuestions.begin(), usedQuestions.end(), randomNumber) != usedQuestions.end())
+        {
+            // go to next loop iteration
+            continue;
+        }
+        else
+        {
+            ParseQuestion fetchedQuestion = getQuestion(randomNumber, questions);
+
+            if (fetchedQuestion.getQuestionDiff() == difficulty)
+            {
+                usedQuestions.push_back(randomNumber);
+                returnQuestions.push_back(fetchedQuestion);
+            }
+
+            else
+            {
+                continue;
+            }
+        }
+
+    }
 
 
 
-// Apply answer index cm
+    return returnQuestions;
+}
+
+int transform_answer_to_index(ParseQuestion question){
+    string answer = question.getQuestionAnswer();
+    char letter = answer[0];
+    if(question.getQuestionType() == "TF"){
+        if(letter == 'F'){
+            return 1;
+        }
+        return 0;
+    }else{
+
+        cout << letter << endl ;
+
+        switch (letter)
+        {
+        case 'A':
+            return 0;
+            break;
+        case 'B':
+            return 1;
+            break;
+        case 'C':
+            return 2;
+            break;
+        case 'D':
+            return 3;
+            break;
+        default:
+            return -1;
+            break;
+        }
+
+
+    }
+}
+
+bool isParseQuestionMCQ(ParseQuestion question){
+    string answer = question.getQuestionAnswer();
+    char letter = answer[0];
+    if(question.getQuestionType() == "TF"){
+        return false;
+    }
+    return true;
+}
+
+void getLines(string path){
+    srand(time(NULL));
+
+    // read in the text file
+    //ifstream inputFile("C:/Users/Josh Goodwin/Desktop/School/UKZN/Third Year/COMP315/315 Projects/Project_315/WorldWar2Questions.txt");
+
+    ifstream inputFile("/home/vyasa/Documents/TestingSuite/QuestionGUI-TextParsing-quiz-question-generator/Project_315/WorldWar2Questions.txt");
+    // ifstream inputFile(path);
+
+    // variable to store each line of the text file as it is read in
+    string line;
+
+
+    // print error message if the file cannot be read
+    if (!inputFile.is_open())
+    {
+        cout << "Unable to open file." << endl;
+
+    }
+
+    // Read each line from the file and store it in the vector
+    while (getline(inputFile, line))
+    {
+        lines.push_back(line);
+    }
+
+    // Close the input file
+    inputFile.close();
+    std::cout << "Got the lines" << std::endl;
+
+}
+
+Question convertToQuestion(ParseQuestion parseQuestion){
+    string questionPrompt = parseQuestion.getQuestion();
+
+    // string answer = parseQuestion.getQuestionAnswer();
+
+    int answerIndex = transform_answer_to_index(parseQuestion);
+    vector<string> options = parseQuestion.parsePossibleAnswers();
+    bool isMCQ = isParseQuestionMCQ(parseQuestion);
+    Question transitionQuestion(questionPrompt, options , answerIndex ,isMCQ);
+    return transitionQuestion;
+}
+
+vector<Question> createValidQuestionFormat(vector<ParseQuestion> parsedQuestions){
+    vector<Question> transitionQuestions;
+
+    for(int i = 0;i <parsedQuestions.size(); i++ ){
+        transitionQuestions.push_back(convertToQuestion(parsedQuestions[i]));
+    }
+
+    return transitionQuestions;
+
+}
+
+/* Stop Parse Question Methods */
+
+// Apply answer index color?
 void MainWindow::applyStyleUpdateAnswer(int answerIndex){
 
     applyStyleSheetToRadioButtons();
@@ -236,6 +389,12 @@ MainWindow::MainWindow(QWidget *parent)
                          "border-radius: 5px;"
                          "}"
         ;
+    getLines("");
+
+    vector<ParseQuestion> easy = getQuestionsOfDifficulty(30, "E",lines);
+    testGroup.setAllQuestions(createValidQuestionFormat(easy));
+
+
 
     ui->questionProgress->setStyleSheet(progressBarStyleSheet);
     applyStyleSheetToRadioButtons();

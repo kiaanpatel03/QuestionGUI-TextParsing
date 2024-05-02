@@ -20,7 +20,9 @@ void QuestionGroup::previous(){
         std::cout << "No more prior questions" << std::endl;
     }
 }
-
+void QuestionGroup::setAllQuestions(std::vector<Question> newQuestions){
+    this->allQuestions = newQuestions;
+}
 int QuestionGroup::size(){
     return this->allQuestions.size();
 }

@@ -11,11 +11,13 @@ CONFIG += c++17
 SOURCES += \
     main.cpp \
     mainwindow.cpp \
+    parsequestion.cpp \
     question.cpp \
     questiongroup.cpp
 
 HEADERS += \
     mainwindow.h \
+    parsequestion.h \
     question.h \
     questiongroup.h
 

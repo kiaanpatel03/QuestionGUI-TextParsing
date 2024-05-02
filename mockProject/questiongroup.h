@@ -13,6 +13,7 @@ public:
     void next();
     void previous();
     Question getQuestion();
+    void setAllQuestions(std::vector<Question> newQuestions);
     void setQuestion( Question question);
     int getIndex();
     ~QuestionGroup();
