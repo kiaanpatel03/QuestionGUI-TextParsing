@@ -1,0 +1,111 @@
+#include "mainwindow.h"
+#include "ui_mainwindow.h"
+#include <QMainWindow>
+#include <QCoreApplication>
+#include <QFile>
+#include <QTextStream>
+#include <QString>
+#include <QVector>
+#include <QDebug>
+#include <QInputDialog>
+#include <algorithm>
+#include <QElapsedTimer>
+
+QElapsedTimer timer;
+
+MainWindow::MainWindow(QWidget *parent)
+    : QMainWindow(parent)
+    , ui(new Ui::MainWindow)
+
+{
+    timer.start();
+    ui->setupUi(this);
+
+}
+
+
+MainWindow::~MainWindow()
+{
+    delete ui;
+    //
+}
+struct Player {
+    QString username;
+    int score;
+    double time;
+};
+
+bool comparePlayers(const Player& a, const Player& b) {
+    if (a.score == b.score) {
+        return a.time < b.time;
+    }
+    return a.score > b.score;
+}
+void AddDetailsToLeaderboard(const QString& username, int score, double time) {
+    QFile outFile("leaderboard.txt");
+    if (outFile.open(QIODevice::Append | QIODevice::Text)) {
+        QTextStream stream(&outFile);
+        stream << username << "@" << score << "@" << time << "\n";
+        outFile.close();
+    } else {
+        qWarning() << "Unable to write to file.";
+    }
+
+}
+
+void StoreLeaderboardInStruct(QVector<Player>& players) {
+    QFile inputFile("leaderboard.txt");
+    if (!inputFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        qWarning() << "Error opening file!";
+        return;
+    }
+
+    players.clear();
+    QTextStream in(&inputFile);
+    while (!in.atEnd()) {
+        QString line = in.readLine();
+        QStringList tokens = line.split('@');
+        if (tokens.size() == 3) {
+            QString username = tokens[0];
+            int score = tokens[1].toInt();
+            double time = tokens[2].toDouble();
+            players.push_back({username, score, time});
+        }
+    }
+    std::sort(players.begin(), players.end(), comparePlayers);
+}
+
+void PrintLeaderboard(const QVector<Player>& players,Ui::MainWindow *ui) {
+    ui->textEdit->clear();
+    ui->textEdit->append( "Leaderboard:");
+    ui->textEdit->append("Rank\tUsername\tScore\tTime");
+
+    int rank = 1;
+    int tie = 0;
+    for (int i = 0; i < players.size(); i++) {
+        if (i > 0 && (players[i].score != players[i - 1].score || players[i].time != players[i - 1].time)) {
+            rank += tie + 1;
+            tie = 0;
+        } else if (i > 0 && players[i].score == players[i - 1].score && players[i].time == players[i - 1].time) {
+            ++tie;
+        }
+        QString playerTime = QString::number(players[i].time, 'f', 1);
+        ui->textEdit->append(QString("%1\t%2\t%3\t%4 seconds").arg(rank).arg(players[i].username).arg(players[i].score).arg(playerTime));
+    }
+}
+
+
+
+void MainWindow::on_pushButton_3__clicked()
+{
+    QString username = ui->txtUsername->text();
+    int score = ui->txtScore->text().toInt();
+    qint64 elapsedMilliseconds = timer.elapsed();
+    double timeDurationSeconds = static_cast<double>(elapsedMilliseconds) / 1000.0;
+
+    QVector<Player> players;
+    AddDetailsToLeaderboard(username, score, timeDurationSeconds);
+    StoreLeaderboardInStruct(players);
+    PrintLeaderboard(players,ui);
+}
+
